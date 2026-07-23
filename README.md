@@ -122,27 +122,27 @@ Airbnb_Dynamic_Pricing_Engine/
 
 ---
 
-🤖 Machine Learning Model:
-Model Details:
-Algorithm: Random Forest Regressor
-Estimators: 150
-Max Depth: 15
-Features: Bedrooms, Bathrooms, Accommodates, Review Score, Reviews, Amenities, Location, Room Type.
+🤖 Machine Learning Model  
+Model Details: 
+ | Algorithm: Random Forest Regressor
+ | Estimators: 150
+ | Max Depth: 15
+ | Features: Bedrooms, Bathrooms, Accommodates, Review Score, Reviews, Amenities, Location, Room Type.
 
 ---
 
-👩‍💻 Author
+👩‍💻 Author  
 Laura Maurice
-Elevate Labs Data Analyst Intern
-GitHub
-LinkedIn
+ | Elevate Labs Data Analyst Intern
+ | GitHub
+ | LinkedIn
 
 ---
 
-🙏 Acknowledgments
+🙏 Acknowledgments  
 Elevate Labs - For providing the internship opportunity
-Inside Airbnb - For the dataset
-Chart.js - For beautiful charts
-Bootstrap - For responsive design
+ | Inside Airbnb - For the dataset
+ | Chart.js - For beautiful charts
+ | Bootstrap - For responsive design
 
 ------
