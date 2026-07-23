@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - PriceWise{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title"><i class="fas fa-chart-pie text-primary"></i> Analytics Dashboard</h2>
+    <span class="badge bg-primary-glow"><i class="fas fa-clock"></i> Live Data</span>
+</div>
+
+<!-- Chart Row 1 -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card-cosmic p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5><i class="fas fa-map-pin text-primary"></i> Price by Neighborhood</h5>
+                <span class="badge bg-secondary"><i class="fas fa-info-circle"></i> Top 10</span>
+            </div>
+            <div style="height: 300px;"><canvas id="neighborhoodChart"></canvas></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card-cosmic p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5><i class="fas fa-arrow-trend-up text-purple"></i> Feature Importance</h5>
+                <span class="badge bg-secondary"><i class="fas fa-robot"></i> ML Model</span>
+            </div>
+            <div style="height: 300px;"><canvas id="featureChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart Row 2 -->
+<div class="row g-4 mt-2">
+    <div class="col-lg-6">
+        <div class="card-cosmic p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5><i class="fas fa-link text-pink"></i> Correlation with Price</h5>
+                <span class="badge bg-secondary"><i class="fas fa-chart-simple"></i> Key Drivers</span>
+            </div>
+            <div style="height: 300px;"><canvas id="correlationChart"></canvas></div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card-cosmic p-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5><i class="fas fa-door-open text-primary"></i> Room Type Distribution</h5>
+                <span class="badge bg-secondary"><i class="fas fa-pie-chart"></i> Distribution</span>
+            </div>
+            <div style="height: 300px;"><canvas id="roomTypeChart"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<!-- Insights Box -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card-cosmic p-4">
+            <h5><i class="fas fa-lightbulb text-warning"></i> Key Insights</h5>
+            <div class="row g-3 mt-2">
+                <div class="col-md-4">
+                    <div class="insight-item">
+                        <i class="fas fa-crown text-warning"></i>
+                        <span><strong>Top Neighborhood:</strong> Manhattan ($195 avg)</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="insight-item">
+                        <i class="fas fa-star text-primary"></i>
+                        <span><strong>Top Room Type:</strong> Entire home/apt</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="insight-item">
+                        <i class="fas fa-key text-success"></i>
+                        <span><strong>Key Price Driver:</strong> Location & Amenities</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

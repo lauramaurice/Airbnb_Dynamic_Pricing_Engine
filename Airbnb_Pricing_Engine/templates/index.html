@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - PriceWise{% endblock %}
+
+{% block content %}
+<!-- HERO SECTION -->
+<div class="hero-section">
+    <div class="hero-content">
+        <div class="hero-icon">
+            <i class="fas fa-home"></i>
+        </div>
+        <h1>Airbnb <span class="glow-text">Dynamic Pricing</span> Engine</h1>
+        <p>Discover the optimal price for your Airbnb listing using advanced machine learning. Analyze market trends and get data-driven recommendations.</p>
+        <div class="hero-buttons">
+            <a href="/predict" class="btn btn-primary-glow">
+                <i class="fas fa-calculator"></i> Get Price Estimate
+            </a>
+            <a href="/dashboard" class="btn btn-outline-glow">
+                <i class="fas fa-chart-line"></i> View Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- STATS CARDS -->
+<div class="row g-4 mb-5" id="stats-container">
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-building"></i></div>
+            <div class="number" id="total-listings">Loading...</div>
+            <div class="label">Total Listings</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+            <div class="number" id="avg-price">Loading...</div>
+            <div class="label">Average Price</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-map-pin"></i></div>
+            <div class="number" id="top-neighborhood">Loading...</div>
+            <div class="label">Top Neighborhood</div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-lg-6 col-md-6">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-door-open"></i></div>
+            <div class="number" id="top-room-type">Loading...</div>
+            <div class="label">Top Room Type</div>
+        </div>
+    </div>
+</div>
+
+<!-- QUICK FEATURES -->
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card-cosmic text-center p-4">
+            <div class="feature-icon"><i class="fas fa-robot"></i></div>
+            <h5>AI-Powered Predictions</h5>
+            <p class="text-secondary">Machine learning model trained on real Airbnb data for accurate pricing.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-cosmic text-center p-4">
+            <div class="feature-icon"><i class="fas fa-chart-simple"></i></div>
+            <h5>Market Insights</h5>
+            <p class="text-secondary">Analyze neighborhood trends, room type performance, and more.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-cosmic text-center p-4">
+            <div class="feature-icon"><i class="fas fa-sliders"></i></div>
+            <h5>Custom Parameters</h5>
+            <p class="text-secondary">Adjust listing features and get instant price recommendations.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+fetch('/api/stats')
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById('total-listings').textContent = data.total_listings.toLocaleString();
+        document.getElementById('avg-price').textContent = '$' + data.avg_price;
+        document.getElementById('top-neighborhood').textContent = data.top_neighborhood;
+        document.getElementById('top-room-type').textContent = data.top_room_type;
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Predict Price - PriceWise{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="section-title"><i class="fas fa-brain text-primary"></i> Price Predictor</h2>
+    <span class="badge bg-primary-glow"><i class="fas fa-robot"></i> AI Powered</span>
+</div>
+
+<div class="row g-4">
+    <!-- Input Form -->
+    <div class="col-lg-6">
+        <div class="card-cosmic p-4">
+            <h5><i class="fas fa-sliders text-primary"></i> Enter Listing Details</h5>
+            <form id="predictForm" class="predict-form mt-3">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <label><i class="fas fa-bed"></i> Bedrooms</label>
+                        <input type="number" id="bedrooms" class="form-control" value="2" min="0" max="10">
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-bath"></i> Bathrooms</label>
+                        <input type="number" id="bathrooms" class="form-control" value="1.5" min="0.5" max="5" step="0.5">
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-users"></i> Accommodates</label>
+                        <input type="number" id="accommodates" class="form-control" value="4" min="1" max="16">
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-tag"></i> Room Type</label>
+                        <select id="room_type" class="form-control">
+                            <option value="Entire home/apt"><i class="fas fa-home"></i> Entire home/apt</option>
+                            <option value="Private room"><i class="fas fa-door-closed"></i> Private room</option>
+                            <option value="Shared room"><i class="fas fa-people-arrows"></i> Shared room</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-map-pin"></i> Neighborhood</label>
+                        <select id="neighbourhood" class="form-control">
+                            <option value="Manhattan">🗽 Manhattan</option>
+                            <option value="Brooklyn">🌉 Brooklyn</option>
+                            <option value="Queens">🏙️ Queens</option>
+                            <option value="Bronx">🏠 Bronx</option>
+                            <option value="Staten Island">⛴️ Staten Island</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-star"></i> Review Score</label>
+                        <input type="number" id="review_scores" class="form-control" value="90" min="0" max="100">
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-comment"></i> Reviews Count</label>
+                        <input type="number" id="reviews" class="form-control" value="50" min="0" max="1000">
+                    </div>
+                    <div class="col-6">
+                        <label><i class="fas fa-cube"></i> Amenities</label>
+                        <input type="number" id="amenities" class="form-control" value="10" min="0" max="50">
+                    </div>
+                </div>
+                <button type="submit" class="btn-predict mt-4">
+                    <i class="fas fa-calculator"></i> Predict Price
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Result -->
+    <div class="col-lg-6">
+        <div class="card-cosmic p-4" style="height: 100%;">
+            <h5><i class="fas fa-gem text-primary"></i> Prediction Result</h5>
+            <div id="resultContainer" class="text-center" style="padding: 50px 0;">
+                <div class="result-placeholder">
+                    <i class="fas fa-home" style="font-size: 64px; color: #A0AEC0;"></i>
+                    <p class="text-secondary mt-3">Fill in the details and click <br><strong>"Predict Price"</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('predictForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('.btn-predict');
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Predicting...';
+    btn.disabled = true;
+
+    const data = {
+        bedrooms: parseInt(document.getElementById('bedrooms').value),
+        bathrooms: parseFloat(document.getElementById('bathrooms').value),
+        accommodates: parseInt(document.getElementById('accommodates').value),
+        room_type: document.getElementById('room_type').value,
+        neighbourhood: document.getElementById('neighbourhood').value,
+        review_scores: parseFloat(document.getElementById('review_scores').value),
+        reviews: parseInt(document.getElementById('reviews').value),
+        amenities: parseInt(document.getElementById('amenities').value)
+    };
+
+    fetch('/api/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => {
+        btn.innerHTML = '<i class="fas fa-calculator"></i> Predict Price';
+        btn.disabled = false;
+
+        const container = document.getElementById('resultContainer');
+        if (data.status === 'success') {
+            container.innerHTML = `
+                <div class="result-card animate__animated animate__fadeInUp">
+                    <p class="text-secondary"><i class="fas fa-tag"></i> Recommended Price</p>
+                    <div class="price">$${Math.round(data.predicted_price)}</div>
+                    <p class="range"><i class="fas fa-arrow-left"></i> $${Math.round(data.min_price)} - $${Math.round(data.max_price)} <i class="fas fa-arrow-right"></i></p>
+                    <div class="row g-2 mt-3">
+                        <div class="col-4">
+                            <span class="badge bg-confidence" style="background: linear-gradient(135deg, #00D4FF, #7B2FFC); color: white; padding: 8px 16px;">
+                                <i class="fas fa-shield-alt"></i> ${Math.round(data.confidence * 100)}% Confidence
+                            </span>
+                        </div>
+                        <div class="col-4">
+                            <span class="badge bg-info" style="padding: 8px 16px;">
+                                <i class="fas fa-globe"></i> ${data.currency}
+                            </span>
+                        </div>
+                        <div class="col-4">
+                            <span class="badge bg-success" style="padding: 8px 16px;">
+                                <i class="fas fa-check-circle"></i> Ready
+                            </span>
+                        </div>
+                    </div>
+                    <div class="mt-3 p-3" style="background: rgba(0,212,255,0.05); border-radius: 12px; border: 1px solid rgba(0,212,255,0.1);">
+                        <p class="text-secondary mb-0" style="font-size: 13px;">
+                            <i class="fas fa-lightbulb text-warning"></i> 
+                            ${data.insights.factor1} • ${data.insights.factor2} • ${data.insights.factor3}
+                        </p>
+                    </div>
+                </div>
+            `;
+        } else {
+            container.innerHTML = `<div class="alert alert-danger">❌ Error: ${data.message}</div>`;
+        }
+    })
+    .catch(err => {
+        btn.innerHTML = '<i class="fas fa-calculator"></i> Predict Price';
+        btn.disabled = false;
+        document.getElementById('resultContainer').innerHTML = `<div class="alert alert-danger">❌ Network error. Please try again.</div>`;
+    });
+});
+</script>
+{% endblock %}
